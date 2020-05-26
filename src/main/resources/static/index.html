@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Show Vsia Card</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<style>
+  iframe {
+    border: 0px solid transparent;
+    height: 100%;
+    width: 100%;
+  }
+
+  #state {
+    height: 50px;
+  }
+
+  #reveal-btn{
+    margin-bottom: 10px;
+  }
+
+  #secret-data{
+    width: 200px;
+    margin-bottom: 6px;
+    margin-top: 6px;
+  }
+
+  span[id*="vgs-"] {
+    margin-left: 10px;
+  }
+
+  em {
+    color: gray;
+  }
+
+  #sailorTable{
+    white-space: normal;
+  }
+
+  tbody {
+      display:block;
+      height:100%;
+      overflow:auto;
+  }
+  thead, tbody tr {
+      display:table;
+      width:100%;
+      table-layout:fixed;
+  }
+
+  td{
+    height: 40px;
+  }
+
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading"><strong>Show Visa Card</strong></div>
+      <div class="panel-body">
+        <label>VGS Token for Visa Card Number: </label>
+        <span id="vgs-pan-token">tok_sandbox_7WK53r314zDFKjY5qcMcWH</span>
+        <br/>
+        <label>VGS Token for Visa Card CVC: </label>
+        <span id="vgs-cvc-token">tok_sandbox_k2HapT8dNPnN5i3XQj6hwV</span>
+
+        <hr/>
+        <button id="reveal-btn" class="reveal-card btn btn-sm btn-primary">Reveal Card</button>
+        <br/>
+
+        <table id="sailorTable" class="table table-striped table-bordered" width="100%">
+          <thead>
+              <tr>
+                  <th>Card Number</th>
+                  <th>CVC</th>
+              </tr>
+          </thead>
+           <tbody>
+              <tr>
+                  <td id="revealed-card-number" ><!--VGS Show.js iframe for card number will be here!--></td>
+                  <td id="revealed-card-cvc"><!--VGS Show.js iframe for card cvc will be here!--></td>
+              </tr>
+          </tbody>
+        </table>
+
+        <hr/>
+        <label>Iframe state:</label>
+        <pre id="state"></pre>
+
+    </div>
+     <div id="error"></div>
+  </div>
+ </div>
+
+ <script type="text/javascript" src="https://js.verygoodvault.com/vgs-show/1.1/AChxJDrK5hoEKYdZQnh8DUuY.js"></script>
+ <script type="text/javascript">
+
+  const button = document.getElementById('reveal-btn');
+
+  button.addEventListener('click', function() {
+    const show = VGSShow.create('tntxqudwikg', function(state) {
+      document.getElementById('state').innerText = JSON.stringify(state, null, ' '); 
+    });
+ 
+    const iframe_cc = show.request({
+      name: 'data-text',
+      method: 'POST',
+      path: '/get-secret-data',
+      headers: {'X-Access-Token': 'YWRtaW46cGFzc3dvcmQ='}, // base64 encoded username:password
+      payload: {'json': {'account_number': 'tok_sandbox_7WK53r314zDFKjY5qcMcWH'}},
+      htmlWrapper: 'text',
+      jsonPathSelector: 'json.account_number'
+    });
+
+    const iframe_cvc = show.request({
+      name: 'data-text',
+      method: 'POST',
+      path: '/get-secret-data',
+      headers: {'X-Access-Token': 'YWRtaW46cGFzc3dvcmQ='}, // base64 encoded username:password
+      payload: {'json': {'cvc': 'tok_sandbox_k2HapT8dNPnN5i3XQj6hwV'}},
+      htmlWrapper: 'text',
+      jsonPathSelector: 'json.cvc'
+    });
+    
+    iframe_cc.render('#revealed-card-number');
+    iframe_cvc.render('#revealed-card-cvc');
+  });
+</script>
+
+</body>
+</html>
