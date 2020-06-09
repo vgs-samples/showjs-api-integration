@@ -103,27 +103,27 @@
 
   button.addEventListener('click', function() {
     const show = VGSShow.create('tntxqudwikg', function(state) {
-      document.getElementById('state').innerText = JSON.stringify(state, null, ' '); 
+      document.getElementById('state').innerText = JSON.stringify(state, null, ' ');
     });
  
     const iframe_cc = show.request({
-      name: 'data-text',
-      method: 'POST',
-      path: '/get-secret-data',
-      headers: {'X-Access-Token': 'YWRtaW46cGFzc3dvcmQ='}, // base64 encoded username:password
-      payload: {'json': {'account_number': 'tok_sandbox_7WK53r314zDFKjY5qcMcWH'}},
-      htmlWrapper: 'text',
-      jsonPathSelector: 'json.account_number'
+        name: 'data-text',
+        method: 'POST',
+        path: '/get-secret-data',
+        headers: {'X-Access-Token': 'YWRtaW46cGFzc3dvcmQ='}, // base64 encoded username:password
+        payload: {'account_number': 'tok_sandbox_7WK53r314zDFKjY5qcMcWH'},
+        htmlWrapper: 'text',
+        jsonPathSelector: 'account_number'
     });
 
     const iframe_cvc = show.request({
-      name: 'data-text',
-      method: 'POST',
-      path: '/get-secret-data',
-      headers: {'X-Access-Token': 'YWRtaW46cGFzc3dvcmQ='}, // base64 encoded username:password
-      payload: {'json': {'cvc': 'tok_sandbox_k2HapT8dNPnN5i3XQj6hwV'}},
-      htmlWrapper: 'text',
-      jsonPathSelector: 'json.cvc'
+        name: 'data-text',
+        method: 'POST',
+        path: '/get-secret-data',
+        headers: {'X-Access-Token': 'YWRtaW46cGFzc3dvcmQ='}, // base64 encoded username:password
+        payload: {'cvc': 'tok_sandbox_k2HapT8dNPnN5i3XQj6hwV'},
+        htmlWrapper: 'text',
+        jsonPathSelector: 'cvc'
     });
     
     iframe_cc.render('#revealed-card-number');
